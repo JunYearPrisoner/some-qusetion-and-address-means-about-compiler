@@ -6,18 +6,18 @@ p42.
 
 int main()
 {
-	int d=0;
-	int i=100;
-	int x=1;
-	while(x<=i){
-		if(x%6==0){
-			printf("%d\n",x);
-		  d++;
-		}
-			x++;
-	}
+   int d=0;
+   int i=100;
+   int x=1;
+   while(x<=i){
+      if(x%6==0){
+      printf("%d\n",x);
+      d++;
+      }
+      x++;
+    }
 	
-	printf("1到100之间能被6整除的数有%d个\n",d);
+    printf("1到100之间能被6整除的数有%d个\n",d);
 	
-	return 0;
+    return 0;
 }
