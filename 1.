@@ -1,0 +1,24 @@
+#include <stdio.h>
+
+
+int main()
+{
+    int a[32767]={0};
+    int b[10];
+    for(int i=0;i<10;i++){
+    	scanf("%d",&b[i]);
+	}
+	for(int i=0;i<10;i++){
+		a[b[i]]=a[b[i]]+1;
+		//将b[i]的值作为a的下标，数组b每读到一个相同的数，
+		//a中这个下标对应的值都会+1； 
+	}
+	for(int i=0;i<32767;i++){
+		if(a[i]>0){
+
+			printf("%d ",i);
+		}
+	}
+
+	return 0;
+} 
