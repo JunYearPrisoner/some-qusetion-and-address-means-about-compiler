@@ -1,0 +1,275 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<conio.h>
+typedef struct student
+{
+	char num[200]; 
+    char name[10];
+    char sex[5];
+    char age;
+    char duty[20]; 
+    char address[200];
+    int birthday;
+    int grade;
+	struct student *next;
+}St;
+void creat(student*head)
+{
+	St *p=head;
+	St *p1=(student*)malloc(sizeof(student));
+		printf("请输入学号：\n");
+		scanf("%s",&p1->num);
+		printf("请输入姓名；\n");
+		scanf("%s",&p1->name);
+		printf("年龄：\n");
+		scanf("%s",&p1->age);
+		printf("请输入性别：\n");
+		scanf("%s",&p1->sex);
+		printf("请输入专业：\n");
+		scanf("%s",&p1->duty);
+		printf("请输入入学英语成绩：\n");
+		scanf("%d",&p1->grade);
+		printf("请输入家庭地址：\n");
+		scanf("%s",&p1->address);
+		printf("请输入生日：\n");
+		scanf("%d",&p1->birthday);
+		while(p->next!=NULL)
+		{
+			while(strcmp(p->num,p1->num)==0)
+			{
+				printf("该学生已存在!\n");
+				return;
+			}
+			p=p->next;
+		}
+		p->next=p1;
+		p1->next=NULL;
+		printf("添加成功\n");
+} 
+void revise(student *head)
+{
+    St *p=head->next;
+    char num[200];
+    printf("请输入要修改学生学号：");
+    scanf("%s",num);
+    while(p!=NULL)
+    {
+        while(strcmp(p->num,num)==0)
+        {
+        	printf("请输入修改后的学号\n");
+        	scanf("%s",&p->num);
+			printf("姓名\n");
+        	scanf("%s",&p->name);
+        	printf("性别\n");
+        	scanf("%s",&p->sex);
+        	printf("专业\n");
+        	scanf("%s",&p->duty);
+        	printf("入学英语成绩\n");
+        	scanf("%d",&p->grade);
+        	printf("家庭地址\n");
+        	scanf("%s",&p->address);
+        	printf("生日\n");
+        	scanf("%d",&p->birthday);
+        	printf("修改成功！");
+            return;
+        }
+        p=p->next;
+    }
+	printf("查无此人！");
+}
+void del(student *head) 
+{
+	student *p1,*p2;
+	p1=head;
+	p2=p1->next;
+	char num[200];
+	printf("请输入要删除的学号:");
+	scanf("%s",num);
+	while(p2!=NULL)
+	{
+		while(strcmp(p2->num,num)==0)
+		{
+			p1->next=p2->next;
+			free(p2);
+			printf("删除成功\n");
+			return;
+		}
+		p1=p2; 	
+		p2=p2->next;
+	}
+}
+void add(student*head)
+{
+	int n;
+	St *p,*p1;
+	p=(student*)malloc(sizeof(student));
+	p1=(student*)malloc(sizeof(student));
+	p = head;
+	if(p1==NULL)
+	{
+		printf("插入失败\n");
+		exit(1);
+	}
+    for(int i=0;i<n;i++);
+    {
+   		printf("学号:\n");
+		scanf("%s",&p1->num);
+		printf("姓名\n");
+		scanf("%s",&p1->name);
+		printf("性别：\n");
+		scanf("%s",&p1->sex);
+		printf("专业：\n");
+		scanf("%s",&p1->duty);
+		printf("英语成绩：\n");
+		scanf("%d",&p1->grade);
+		printf("地址：\n");
+		scanf("%s",&p1->address);
+		printf("生日：\n");
+		scanf("%d",&p1->birthday);
+	} 
+	p1->next=head->next;
+	head->next=p1;
+	p1=p1->next;
+	printf("插入成功！\n");
+}
+void save(student*head)
+{
+	St *p;
+  	p=head;
+  	FILE*fp = fopen("新生信息.txt","w");
+	if(fp!=NULL)
+	{
+		while(p->next!=NULL)
+		{
+   			fprintf(fp,"学号：%s\n",p->next->num);
+   			fprintf(fp,"姓名：%s\n",p->next->name);
+   			fprintf(fp,"性别：%s\n",p->next->sex);
+   			fprintf(fp,"专业：%s\n",p->next->duty);
+   			fprintf(fp,"家庭地址：%s\n",p->next->address);
+   			fprintf(fp,"生日：%d\n",p->next->birthday);
+   			p=p->next;
+  			printf("保存成功！\n");
+  		}
+	}
+	fclose(fp);
+} 
+void search(student*head)
+{
+	St *p=head;
+	char num[200];
+	printf("请输入要查找的姓名：");
+	scanf("%s",&num);
+	while(p->next!=NULL)
+	{
+		while(strcmp(p->next->num,num)==0)
+		{
+	    	printf("学号:%s\n",p->next->num);
+			printf("姓名:%s\n",p->next->name);
+			printf("性别:%s\n",p->next->sex);
+			printf("专业:%s\n",p->next->duty);
+			printf("入学英语成绩:%d分\n",p->next->grade);
+			printf("家庭地址:%s\n",p->next->address);
+			printf("生日:%d\n",p->next->birthday);
+			return;
+	    }
+	    p=p->next;
+	}
+	if(p->next==NULL)
+	{
+		printf("未找到该学生信息！");
+		return;
+	}
+}
+void sort(student*head)
+{
+    St*p;
+    int judge = -1;
+    St sorting;
+    while (1)
+	{
+        judge = 0;
+        p= head->next;
+        while (p->next)
+		{
+            if (p->grade> p->next->grade)
+            {
+                judge = 1;
+                sorting.grade= p->grade;
+                p->grade = p->next->grade;
+                p->next->grade = sorting.grade;
+            }
+            p = p->next;
+        };
+        if (!judge)
+            break;
+	}
+    printf("排序成功！\n");
+}
+void print(student*head)
+{
+	printf("入学英语成绩排名表！！！\n");
+	St *p = head->next;
+	while (p)
+	{
+		printf("%s：%d分\n",p->name,p->grade);
+		printf("*********************************\n");
+		p = p->next;
+	}
+}
+
+int main()
+{
+	student *head=(student*)malloc(sizeof(student));
+    head->next=NULL;
+    char choice;
+	while(1) 
+    {
+    printf("\t\t\t\t**********新生管理系统************\n");
+    printf("\t\t\t\t请选择你的操作\n");
+    printf("\t\t\t\t1.创建信息\n");
+    printf("\t\t\t\t2.修改信息\n");
+    printf("\t\t\t\t3.删除信息\n");
+    printf("\t\t\t\t4.保存信息\n"); 
+    printf("\t\t\t\t5.插入信息\n"); 
+    printf("\t\t\t\t6.查询信息\n");
+    printf("\t\t\t\t7.按成绩排序\n");
+    printf("\t\t\t\t8.成绩排名显示\n") ;
+    printf("\t\t\t\t9.退出\n"); 
+    printf("\t\t\t\t**********************************\n");
+    	printf("\t\t\t\t请按键选择操作：\n");
+        fflush(stdin); 
+        choice=getch();
+        switch(choice)
+        {
+    	case '1':
+    		creat(head);
+    		break;
+    	case '2':
+    		revise(head);
+    		break;
+    	case '3':
+    		del(head);
+    		break;
+    	case '4':
+			save(head); 
+			break;
+    	case '5':
+    		add(head);
+    		break;
+    	case '6':
+    		search(head);
+    		break;
+    	case '7':
+    		sort(head);
+    		break;
+    	case '8':
+    		print(head);
+    		break;
+    	case '9':
+    		exit(0);
+		default:
+        	printf("输入错误！");
+	    }
+    }	
+}
