@@ -1,0 +1,186 @@
+#include <iostream>
+#include<stdlib.h>
+#include<string>
+#include<conio.h>
+using namespace std;
+
+void baseinformation() {
+    printf("*\t\t\t\t腾飞社员管理系统\t\t\t\t*\n");
+    printf("****************************************");
+    printf("*****************************************\n");
+    printf("\t\t\t\t1.添加社员信息\n");
+    printf("\t\t\t\t2.删除社员信息\n");
+    printf("\t\t\t\t3.修改社员信息\n");
+    printf("\t\t\t\t4.查找社员信息\n");
+    printf("\t\t\t\t5.查看所有社员信息\n");
+    printf("\t\t\t\t6.退出系统\n");
+    printf("****************************************");
+    printf("*****************************************\n");
+}
+
+struct student 
+{
+    int number='\0';
+    string name;
+    char sex;
+    int age='\0';
+    string birth;
+    string date;
+    struct student* next;
+}stu;
+
+void addnumber(student *head) {
+    student* p = new student;
+    student* p1 = head;
+    cout<<"请输入学号："<<endl;
+    cin>>p->number;
+    cout<<"请输入姓名: "<<endl;
+    cin >> p->name;
+    cout << "请输入性别：" << endl;
+    cin >> p->sex;
+    cout << "请输入年龄：" << endl;
+    cin >> p->age;
+    cout << "请输入出生年月：" << endl;
+    cin >> p->birth;
+    cout << "请输入入社时间: " << endl;
+    cin >> p->date;
+    while (p1->next != NULL)
+    {
+        while (p1->number==p->number)
+        {
+            cout<<"该学生已存在!"<<endl;
+            return;
+        }
+        p1 = p1->next;
+    }
+    p1->next = p;
+    p->next = NULL;
+    cout << "添加成功" << endl;
+}
+
+void deletenumber(student *head) 
+{
+    student* p = head;
+    student* p1 = p->next;
+    
+    cout << "请输入要删除的学生学号" << endl;
+    int number;
+    cin >> number;
+        
+    while (p1 != NULL)
+    {
+        while (p1->number == number)
+        {
+            p->next = p1->next;
+            free(p1);
+            cout << "删除成功" << endl;
+            return;
+        }
+        p = p1;
+        p1 = p1->next;
+    }
+    cout << "查无此人" << endl;
+}
+
+void revernewnumber(student *head)
+{
+    student* p = head;
+    cout << "请输入要修改的学生学号" << endl;
+    int number;
+    cin >> number;
+    while (p) {
+        if (p->number == number) {
+            cout << "请输入修改后的该学生学号" << endl;
+            cin >> p->number;
+            cout << "请输入修改后的该学生姓名" << endl;
+            cin >> p->name;
+            cout << "请输入修改后的该学生性别" << endl;
+            cin >> p->sex;
+            cout << "请输入修改后的该学生的年龄" << endl;
+            cin >> p->age;
+            cout << "请输入修改后的该学生的出生年月" << endl;
+            cin >> p->birth;
+            cout << "请输入修改后的该学生的入社时间" << endl;
+            cin >> p->date;
+            cout << "修改成功" << endl;
+            return;
+        }
+        p = p->next;
+    }
+    cout << "查无此人" << endl;
+}
+
+void searchnumber(student *head)
+{
+    student* p = head;
+    cout << "请输入要查找的学生学号" << endl;
+    int number;
+    cin >> number;
+    while (p) {
+        if (number == p->number) {
+            cout << "学号为" << number << "的学生的信息如下：" << endl;
+            cout << "学号：" << p->number << endl;
+            cout << "姓名: " << p->name << endl;
+            cout << "性别：" << p->sex << endl;
+            cout << "年龄：" << p->age << endl;
+            cout << "出生年月：" << p->birth << endl;
+            cout << "入团时间：" << p->date << endl;
+            return;
+        }
+        else {
+            p = p->next;
+        }
+    }
+    cout << "查无此人" << endl;
+}
+
+void overlooknumber(student *head)
+{
+    student* p = head->next;
+    int i = 0;
+    while (p) {
+        cout << "学号：" << p->number << endl;
+        cout << "姓名: " << p->name << endl;
+        cout << "性别：" << p->sex << endl;
+        cout << "年龄：" << p->age << endl;
+        cout << "出生年月：" << p->birth << endl;
+        cout << "入团时间：" << p->date << endl;
+        i++;
+        p = p->next;
+    }
+    if (i != 0)
+        cout << "腾飞社团共有：" << i << "个人" << endl;
+    else
+        cout << "腾飞社团没有人" << endl;
+}
+
+int main() {
+    int a;
+
+    student* head = new student;
+    head->next = NULL;
+    while (1) {
+        baseinformation();
+        cin >> a;
+        switch (a) {
+        case 1:
+            addnumber(head);
+            break;
+        case 2:
+            deletenumber(head);
+            break;
+        case 3:
+            revernewnumber(head);
+            break;
+        case 4:
+            searchnumber(head);
+            break;
+        case 5:
+            overlooknumber(head);
+            break;
+        case 6:
+            return 0;
+        }
+    }
+    return 0;
+}
