@@ -2,7 +2,13 @@
 #include<stdlib.h>
 #include<string>
 #include<conio.h>
+#include<algorithm>
 using namespace std;
+
+class comp {
+public:
+    int com[201] = { 0 };
+}co;
 
 void baseinformation() {
     printf("*\t\t\t\t腾飞社员管理系统\t\t\t\t*\n");
@@ -20,10 +26,10 @@ void baseinformation() {
 
 struct student 
 {
-    int number='\0';
+    int number;
     string name;
     char sex;
-    int age='\0';
+    int age;
     string birth;
     string date;
     struct student* next;
@@ -137,21 +143,125 @@ void searchnumber(student *head)
 void overlooknumber(student *head)
 {
     student* p = head->next;
-    int i = 0;
-    while (p) {
-        cout << "学号：" << p->number << endl;
-        cout << "姓名: " << p->name << endl;
-        cout << "性别：" << p->sex << endl;
-        cout << "年龄：" << p->age << endl;
-        cout << "出生年月：" << p->birth << endl;
-        cout << "入团时间：" << p->date << endl;
-        i++;
-        p = p->next;
+    int i = 0,k=0;
+    for (int j = 0;j < 200;j++) {
+        if (co.com[j] != 0)
+            k++;
+    }
+
+    if (k != 0) {
+        for (int j = 0;j < 200;j++) {
+            while (p) {
+                if (co.com[j] == p->number || co.com[j] == p->age) {
+                    cout << "学号：" << p->number << endl;
+                    cout << "姓名: " << p->name << endl;
+                    cout << "性别：" << p->sex << endl;
+                    cout << "年龄：" << p->age << endl;
+                    cout << "出生年月：" << p->birth << endl;
+                    cout << "入团时间：" << p->date << endl;
+                    cout << endl;
+                    i++;
+                    p = p->next;
+                }
+                else {
+                    p = p->next;
+                }
+            }
+            p = head->next;
+        }
+    }
+    else {
+        while (p) {
+            cout << "学号：" << p->number << endl;
+            cout << "姓名: " << p->name << endl;
+            cout << "性别：" << p->sex << endl;
+            cout << "年龄：" << p->age << endl;
+            cout << "出生年月：" << p->birth << endl;
+            cout << "入团时间：" << p->date << endl;
+            i++;
+            p = p->next;
+        }
     }
     if (i != 0)
         cout << "腾飞社团共有：" << i << "个人" << endl;
     else
         cout << "腾飞社团没有人" << endl;
+}
+
+void aheadchoosepaixu() {
+    cout << "1.普通查找" << endl;
+    cout << "2.学号升序" << endl;
+    cout << "3.学号降序" << endl;
+    cout << "4.年龄升序" << endl;
+    cout << "5.年龄降序" << endl;
+    cout << "6.返回上一步" << endl;
+}
+bool campadd(int a, int b) {
+    return a > b;
+}
+
+void aheadpaixu(student *head) {
+    student* p=head;
+    int a;
+    while (1) {
+        aheadchoosepaixu();
+        cin >> a;
+        switch (a) {
+        case 1:
+            searchnumber(head);
+            break;
+        case 2:{
+                int i=0;
+                co.com[200] = { 0 };
+                while (p!= NULL) {
+                    co.com[i] = p->number;
+                    i++;
+                    p = p->next;
+                }
+                sort(co.com, co.com + i);
+                cout << "排序成功！\n" << endl;
+                break;
+         }
+        case 3: {
+            int i = 0;
+            co.com[200] = { 0 };
+            while (p != NULL) {
+                co.com[i] = p->number;
+                i++;
+                p = p->next;
+            }
+            sort(co.com, co.com + i, campadd);
+            cout << "排序成功！\n" << endl;
+            break;
+         }
+        case 4: {
+            int i = 0;
+            co.com[200] = { 0 };
+            while (p != NULL) {
+                co.com[i] = p->age;
+                i++;
+                p = p->next;
+            }
+            sort(co.com, co.com + i);
+            cout << "排序成功！\n" << endl;
+            break;
+        }
+        case 5: {
+            int i = 0;
+            co.com[200] = { 0 };
+            while (p != NULL) {
+                co.com[i] = p->age;
+                i++;
+                p = p->next;
+            }
+            sort(co.com, co.com + i, campadd);
+            cout << "排序成功！\n" << endl;
+            break;
+        }
+        case 6:
+            return;
+        }
+    }
 }
 
 int main() {
@@ -173,7 +283,7 @@ int main() {
             revernewnumber(head);
             break;
         case 4:
-            searchnumber(head);
+            aheadpaixu(head);
             break;
         case 5:
             overlooknumber(head);
