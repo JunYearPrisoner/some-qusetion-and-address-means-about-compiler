@@ -8,6 +8,7 @@
 
 3.下次会增加文件流
 
+4.开幕输出过长，下次缩短
 
 #include <iostream>
 #include<stdlib.h>
