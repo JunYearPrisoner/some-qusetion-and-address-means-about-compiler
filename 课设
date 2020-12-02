@@ -31,8 +31,12 @@ struct student {
 
 
 void add_stu(student *head){
-    student *p = (student*)malloc(sizeof(student));
+    student *p = (student*)malloc(sizeof(student)+1);
     student* p1 = head;
+    if(p==NULL){
+    	printf("插入失败\n");
+		exit(1);
+	}
     printf("请输入学生的姓名\n");
     scanf("%s",p->name); 
     printf("请输入学生的性别\n");
@@ -45,7 +49,7 @@ void add_stu(student *head){
     scanf("%s",p->address);
     printf("请输入学生的英语成绩\n");
     scanf("%d", &p->englishscore);
-    while (p1->next != NULL) {
+    while (p1->next!= NULL) {
         if (strcmp(p1->name, p->name) == 0) {
             printf("该学生已存在\n");
             return;
@@ -61,7 +65,7 @@ void add_stu(student *head){
 
 void into_stu(student *head){
 	student *p=head;
-	student *p1=(student*)malloc(sizeof(student));
+	student *p1=(student*)malloc(sizeof(student)+1);
 	
 	if(p1==NULL)
 	{
@@ -84,7 +88,6 @@ void into_stu(student *head){
     
 	p1->next=p->next;
 	p->next=p1;
-	p1=p1->next;
 	printf("插入成功！\n");
 }
 
@@ -134,8 +137,8 @@ void info_stu(student *head){
 	int n;
 	in=fopen("student.txt","r");
     for (n=0;!feof(in);n++){
-       student *p1=(student*)malloc(sizeof(student));
-       fscanf(in,"%s%s%s%s%s%d",p1->name,p1->sex,p1->major,p1->birth,p1->address,p1->englishscore);
+       student *p1=(student*)malloc(sizeof(student)+1);
+       fscanf(in,"%s%s%s%s%s%d",p1->name,p1->sex,p1->major,p1->birth,p1->address,&p1->englishscore);
        p1->next=p->next;
 	   p->next=p1;
 	   p1=p1->next;
@@ -196,7 +199,7 @@ void statistic_stu(student *head){
 
 int comp(const void*a,const void*b)
 {
-	return *(int *)a-*(int *)b;
+	return *(int *)b-*(int *)a;
 }
 
 void sort_stu(student *head){
@@ -214,9 +217,10 @@ void sort_stu(student *head){
   int a=0;
   int j=1;
   qsort(sort,200,sizeof(int),comp);
+  
   for(a=0;a<200;a++){
-  	while(p1){
-  		if(sort[a]==p1->englishscore){
+  	while(p1!=NULL){
+  		if(sort[a]!=0&&(sort[a]==p1->englishscore)){
   			printf("英语成绩第%d名学生的姓名为：%s\n",j,p1->name);
             printf("英语成绩第%d名学生的性别为：%s\n",j,p1->sex);
             printf("英语成绩第%d名学生的专业为：%s\n",j,p1->major);
@@ -224,11 +228,14 @@ void sort_stu(student *head){
          //   printf("英语成绩第%d名学生的年龄为：%d\n",j,strcmp(p1->birth,DATE));
             printf("英语成绩第%d名学生的家庭住址为：%s\n",j,p1->address);
             printf("英语成绩第%d名学生的英语成绩为：%d\n",j,p1->englishscore);
-            j++; 
+            printf("\n");
+            j++;
+			p1=p1->next; 
 		  }else{
 		  	p1=p1->next;
 		  }
 	  }
+	  p1=head->next;
   }
   
 }
@@ -259,7 +266,7 @@ int main()
 {
     int a;
 
-    student* head = (student*)malloc(sizeof(student));
+    student* head = (student*)malloc(sizeof(student)+1);
     head->next = NULL;
     while (1) {
         base_information();
