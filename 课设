@@ -1,0 +1,294 @@
+#include <stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<conio.h>
+#define DATE "2020-11-30"
+
+void base_information() {
+    printf("*\t\t新生管理系统\t\t*\n");
+    printf("*****************************************\n");
+    printf("\t\t1.添加学生信息\n");
+    printf("\t\t2.删除学生信息\n");
+    printf("\t\t3.导入学生信息\n");
+    printf("\t\t4.搜索学生信息\n");
+    printf("\t\t5.学生信息统计\n");
+    printf("\t\t6.按英语成绩排序\n");
+    printf("\t\t7.学生信息保存\n");
+    printf("\t\t8.退出系统\n");
+    printf("*****************************************\n");
+}
+
+
+struct student {
+    char name[10];
+    char sex[2];
+    char major[40];
+    char birth[20];
+    int englishscore;
+    struct student* next;
+    char address[];
+};
+
+
+void add_stu(student *head){
+    student *p = (student*)malloc(sizeof(student));
+    student* p1 = head;
+    printf("请输入学生的姓名\n");
+    scanf("%s",p->name); 
+    printf("请输入学生的性别\n");
+    scanf("%s",p->sex);
+    printf("请输入学生的专业\n");
+    scanf("%s",p->major);
+    printf("请输入学生的生日\n");
+    scanf("%s",p->birth);
+    printf("请输入学生的家庭住址\n");
+    scanf("%s",p->address);
+    printf("请输入学生的英语成绩\n");
+    scanf("%d", &p->englishscore);
+    while (p1->next != NULL) {
+        if (strcmp(p1->name, p->name) == 0) {
+            printf("该学生已存在\n");
+            return;
+        }
+        else {
+            p1 = p1->next;
+        }
+    }
+    printf("添加成功！\n");
+    p1->next = p;
+    p->next = NULL;
+}
+
+void into_stu(student *head){
+	student *p=head;
+	student *p1=(student*)malloc(sizeof(student));
+	
+	if(p1==NULL)
+	{
+		printf("插入失败\n");
+		exit(1);
+	}
+	
+   	printf("请输入学生的姓名\n");
+    scanf("%s",p1->name); 
+    printf("请输入学生的性别\n");
+    scanf("%s",p1->sex);
+    printf("请输入学生的专业\n");
+    scanf("%s",p1->major);
+    printf("请输入学生的生日\n");
+    scanf("%s",p1->birth);
+    printf("请输入学生的家庭住址\n");
+    scanf("%s",p1->address);
+    printf("请输入学生的英语成绩\n");
+    scanf("%d", &p1->englishscore);
+    
+	p1->next=p->next;
+	p->next=p1;
+	p1=p1->next;
+	printf("插入成功！\n");
+}
+
+void aheadadd(student *head)
+{
+	int a;
+	while(1){
+	 printf("1.创建\n2.插入\n3.返回上一层\n");
+	 scanf("%d",&a);
+	 switch(a){
+		case 1:
+		       add_stu(head);
+			   break;
+	    case 2:
+		       into_stu(head);
+		       break;
+		case 3:
+		       return;	
+	 }
+    }
+}
+
+void delete_stu(student *head){
+    student* p = head;
+    student *p1 = p->next;
+    char name[20];
+    printf("请输入要删除的学生姓名\n");
+    scanf("%s",name);
+    while (p1 != NULL) {
+        if (strcmp(name, p1->name) == 0) {
+            p->next = p1->next;
+            free(p1);
+            printf("删除成功\n");
+            return;
+        }
+        else {
+            p = p1;
+            p1 = p1->next;
+        }
+    }
+    printf("查无此人\n");
+}
+
+void info_stu(student *head){
+	student *p=head;
+	FILE *in;
+	int n;
+	in=fopen("student.txt","r");
+    for (n=0;!feof(in);n++){
+       student *p1=(student*)malloc(sizeof(student));
+       fscanf(in,"%s%s%s%s%s%d",p1->name,p1->sex,p1->major,p1->birth,p1->address,p1->englishscore);
+       p1->next=p->next;
+	   p->next=p1;
+	   p1=p1->next;
+	}   
+    fclose(in);
+    printf("导入成功，共导入%d个学生",n);
+}
+
+void search_stu(student *head){
+    student* p = head->next;
+    char name[20];
+    printf("请输入查询学生的姓名\n");
+    scanf("%s",name);
+    while (p!= NULL) {
+        if (strcmp(name, p->name) == 0) {
+            printf("学生的姓名为：%s\n",p->name);
+            printf("学生的性别为：%s\n",p->sex);
+            printf("学生的专业为：%s\n",p->major);
+            printf("学生的生日为: %s\n",p->birth);
+        //    printf("学生的年龄为：%d\n", strcmp(p->birth,DATE));
+            printf("学生的家庭住址为：%s\n",p->address);
+            printf("学生的英语成绩为：%d\n",p->englishscore);
+            return;
+        }
+        else {
+            p = p->next;
+        }
+    }
+    printf("查无此人！\n");
+}
+
+void statistic_stu(student *head){
+   int i=0; 
+   student *p=head->next;
+   while(p!=NULL){
+   	        printf("学生的姓名为：%s\n",p->name);
+            printf("学生的性别为：%s\n",p->sex);
+            printf("学生的专业为：%s\n",p->major);
+            printf("学生的生日为: %s\n",p->birth);
+        //    printf("学生的年龄为：%d\n", strcmp(p->birth,DATE));
+            printf("学生的家庭住址为：%s\n",p->address);
+            printf("学生的英语成绩为：%d\n",p->englishscore);
+            printf("\n");
+            p=p->next;
+            i++;
+   }
+   
+   if(i!=0)
+      printf("学生管理系统共记入了%d名学生\n",i);
+   else
+      printf("学生管理系统没有记入任何学生\n");
+}
+
+//int comp(const void*p1,const void *p2)
+//{
+//	return (*(Node*)p2.data>(*(Node*)p1).data?1:-1);
+//}
+
+int comp(const void*a,const void*b)
+{
+	return *(int *)a-*(int *)b;
+}
+
+void sort_stu(student *head){
+  student *p=head->next;
+  student *p1=head->next;
+  int sort[200]={0};
+  int i=0;
+  
+  while(p!=NULL){
+  	sort[i]=p->englishscore;
+  	p=p->next;
+  	i++;
+  }
+  
+  int a=0;
+  int j=1;
+  qsort(sort,200,sizeof(int),comp);
+  for(a=0;a<200;a++){
+  	while(p1){
+  		if(sort[a]==p1->englishscore){
+  			printf("英语成绩第%d名学生的姓名为：%s\n",j,p1->name);
+            printf("英语成绩第%d名学生的性别为：%s\n",j,p1->sex);
+            printf("英语成绩第%d名学生的专业为：%s\n",j,p1->major);
+            printf("英语成绩第%d名学生的生日为: %s\n",j,p1->birth);
+         //   printf("英语成绩第%d名学生的年龄为：%d\n",j,strcmp(p1->birth,DATE));
+            printf("英语成绩第%d名学生的家庭住址为：%s\n",j,p1->address);
+            printf("英语成绩第%d名学生的英语成绩为：%d\n",j,p1->englishscore);
+            j++; 
+		  }else{
+		  	p1=p1->next;
+		  }
+	  }
+  }
+  
+}
+
+void searve_stu(student *head){
+    student *p=head->next;
+  	FILE*fp = fopen("新生信息.txt","w");
+	if(fp!=NULL)
+	{
+		while(p!=NULL)
+		{
+   			fprintf(fp,"%s\n",p->name);
+   			fprintf(fp,"%s\n",p->sex);
+   			fprintf(fp,"%s\n",p->major);
+   			fprintf(fp,"%s\n",p->birth);
+   			fprintf(fp,"%s\n",p->address);
+   			fprintf(fp,"%d\n",p->englishscore);
+   			fprintf(fp,"\n"); 
+   			p=p->next;
+  			
+  		}
+	}
+	fclose(fp);
+	printf("保存成功！\n");
+}
+
+int main()
+{
+    int a;
+
+    student* head = (student*)malloc(sizeof(student));
+    head->next = NULL;
+    while (1) {
+        base_information();
+        scanf("%d",& a);
+        switch (a) {
+        case 1:
+        	aheadadd(head); 
+            break;
+        case 2:
+            delete_stu(head);
+            break;
+        case 3:
+            info_stu(head);
+            break;
+        case 4:
+            search_stu(head);
+            break;
+        case 5:
+            statistic_stu(head);
+            break;
+        case 6:
+            sort_stu(head);
+            break;
+        case 7:
+            searve_stu(head);
+            break;
+        case 8:
+            return 0;
+        }
+    }
+    return 0;
+}
