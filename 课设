@@ -2,7 +2,8 @@
 #include<stdlib.h>
 #include<string.h>
 #include<conio.h>
-#define DATE "2020-11-30"
+#define YEAR 2020
+#define MONTH 12
 
 void base_information() {
     printf("*\t\t新生管理系统\t\t*\n");
@@ -23,12 +24,21 @@ struct student {
     char name[10];
     char sex[2];
     char major[40];
-    char birth[20];
     int englishscore;
+    int year;
+    int month;
+    int day;
     struct student* next;
     char address[];
 };
 
+int age_stu(int year,int month){
+	int age;
+	age=YEAR-year;
+	if(MONTH>month)
+	age--;
+	return age;
+}
 
 void add_stu(student *head){
     student *p = (student*)malloc(sizeof(student)+1);
@@ -44,7 +54,7 @@ void add_stu(student *head){
     printf("请输入学生的专业\n");
     scanf("%s",p->major);
     printf("请输入学生的生日\n");
-    scanf("%s",p->birth);
+    scanf("%d-%d-%d",&p->year,&p->month,&p->day);
     printf("请输入学生的家庭住址\n");
     scanf("%s",p->address);
     printf("请输入学生的英语成绩\n");
@@ -80,7 +90,7 @@ void into_stu(student *head){
     printf("请输入学生的专业\n");
     scanf("%s",p1->major);
     printf("请输入学生的生日\n");
-    scanf("%s",p1->birth);
+    scanf("%d-%d-%d",&p->year,&p->month,&p->day);
     printf("请输入学生的家庭住址\n");
     scanf("%s",p1->address);
     printf("请输入学生的英语成绩\n");
@@ -138,10 +148,10 @@ void info_stu(student *head){
 	in=fopen("student.txt","r");
     for (n=0;!feof(in);n++){
        student *p1=(student*)malloc(sizeof(student)+1);
-       fscanf(in,"%s%s%s%s%s%d",p1->name,p1->sex,p1->major,p1->birth,p1->address,&p1->englishscore);
+       fscanf(in,"%s%s%s%s%d-%d-%d%s%d",p1->name,p1->sex,p1->major,&p1->year,&p1->month,&p1->day,p1->address,&p1->englishscore);
        p1->next=p->next;
 	   p->next=p1;
-	   p1=p1->next;
+	  // p1=p1->next;
 	}   
     fclose(in);
     printf("导入成功，共导入%d个学生",n);
@@ -157,8 +167,8 @@ void search_stu(student *head){
             printf("学生的姓名为：%s\n",p->name);
             printf("学生的性别为：%s\n",p->sex);
             printf("学生的专业为：%s\n",p->major);
-            printf("学生的生日为: %s\n",p->birth);
-        //    printf("学生的年龄为：%d\n", strcmp(p->birth,DATE));
+            printf("学生的生日为: %d-%d-%d\n",p->year,p->month,p->day);
+            printf("学生的年龄为:%d",age_stu(p->year,p->month));
             printf("学生的家庭住址为：%s\n",p->address);
             printf("学生的英语成绩为：%d\n",p->englishscore);
             return;
@@ -177,8 +187,8 @@ void statistic_stu(student *head){
    	        printf("学生的姓名为：%s\n",p->name);
             printf("学生的性别为：%s\n",p->sex);
             printf("学生的专业为：%s\n",p->major);
-            printf("学生的生日为: %s\n",p->birth);
-        //    printf("学生的年龄为：%d\n", strcmp(p->birth,DATE));
+            printf("学生的生日为: %d-%d-%d",p->year,p->month,p->day);
+            printf("学生的年龄为:%d\n",age_stu(p->year,p->month));
             printf("学生的家庭住址为：%s\n",p->address);
             printf("学生的英语成绩为：%d\n",p->englishscore);
             printf("\n");
@@ -224,8 +234,8 @@ void sort_stu(student *head){
   			printf("英语成绩第%d名学生的姓名为：%s\n",j,p1->name);
             printf("英语成绩第%d名学生的性别为：%s\n",j,p1->sex);
             printf("英语成绩第%d名学生的专业为：%s\n",j,p1->major);
-            printf("英语成绩第%d名学生的生日为: %s\n",j,p1->birth);
-         //   printf("英语成绩第%d名学生的年龄为：%d\n",j,strcmp(p1->birth,DATE));
+            printf("英语成绩第%d名学生的生日为: %d-%d-%d\n",p->year,p->month,p->day);
+            printf("学生的年龄为:%d\n",age_stu(p->year,p->month));
             printf("英语成绩第%d名学生的家庭住址为：%s\n",j,p1->address);
             printf("英语成绩第%d名学生的英语成绩为：%d\n",j,p1->englishscore);
             printf("\n");
@@ -242,7 +252,7 @@ void sort_stu(student *head){
 
 void searve_stu(student *head){
     student *p=head->next;
-  	FILE*fp = fopen("新生信息.txt","w");
+  	FILE*fp = fopen("student.txt","w");
 	if(fp!=NULL)
 	{
 		while(p!=NULL)
@@ -250,10 +260,10 @@ void searve_stu(student *head){
    			fprintf(fp,"%s\n",p->name);
    			fprintf(fp,"%s\n",p->sex);
    			fprintf(fp,"%s\n",p->major);
-   			fprintf(fp,"%s\n",p->birth);
+   			fprintf(fp,"%d-%d-%d\n",p->year,p->month,p->day);
    			fprintf(fp,"%s\n",p->address);
-   			fprintf(fp,"%d\n",p->englishscore);
-   			fprintf(fp,"\n"); 
+   			fprintf(fp,"%d",p->englishscore);
+   	//		fprintf(fp,"\n"); 
    			p=p->next;
   			
   		}
