@@ -30,7 +30,7 @@ struct student {
     int day;
     struct student* next;
     char address[];
-};
+}stu;
 
 int age_stu(int year,int month){
 	int age;
@@ -90,7 +90,7 @@ void into_stu(student *head){
     printf("请输入学生的专业\n");
     scanf("%s",p1->major);
     printf("请输入学生的生日\n");
-    scanf("%d-%d-%d",&p->year,&p->month,&p->day);
+    scanf("%d-%d-%d",&p1->year,&p1->month,&p1->day);
     printf("请输入学生的家庭住址\n");
     scanf("%s",p1->address);
     printf("请输入学生的英语成绩\n");
@@ -234,8 +234,8 @@ void sort_stu(student *head){
   			printf("英语成绩第%d名学生的姓名为：%s\n",j,p1->name);
             printf("英语成绩第%d名学生的性别为：%s\n",j,p1->sex);
             printf("英语成绩第%d名学生的专业为：%s\n",j,p1->major);
-            printf("英语成绩第%d名学生的生日为: %d-%d-%d\n",p->year,p->month,p->day);
-            printf("学生的年龄为:%d\n",age_stu(p->year,p->month));
+            printf("英语成绩第%d名学生的生日为: %d-%d-%d\n",j,p1->year,p1->month,p1->day);
+            printf("学生的年龄为:%d\n",age_stu(p1->year,p1->month));
             printf("英语成绩第%d名学生的家庭住址为：%s\n",j,p1->address);
             printf("英语成绩第%d名学生的英语成绩为：%d\n",j,p1->englishscore);
             printf("\n");
@@ -309,3 +309,4 @@ int main()
     }
     return 0;
 }
+
