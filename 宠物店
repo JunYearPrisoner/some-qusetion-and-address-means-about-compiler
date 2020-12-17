@@ -1,0 +1,349 @@
+//大作业1.h头文件
+#include<string>
+using namespace std;
+
+
+class Animal
+{
+public:
+	virtual void action() =0;
+	virtual void speak()=0;
+	virtual ~Animal() {};
+};
+
+class Dog :public Animal
+{
+public:
+	string* s_name;
+	int money;
+	Dog(string name,int i_money);
+	virtual void speak();
+	virtual void action();
+	~Dog();
+};
+
+class Cat :public Animal
+{
+	string* s_name;
+	int money;
+	Cat(string name,int i_money);
+	virtual void speak();
+	~Cat();
+};
+
+class Bird :public Animal
+{
+	string* s_name;
+	int money;
+	Bird(string name,int i_money);
+	virtual void speak();
+	~Bird();
+};
+
+class Snik :public Animal
+{
+	string* s_name;
+	int money;
+	Snik(string name,int i_money);
+	virtual void speak();
+	~Snik();
+};
+
+class People
+{
+public:
+    string name;
+	int money;
+public:
+	People(string str_name,  int str_money);
+	void possess(string name);
+	~People() {};
+};
+
+class Store
+{
+public:
+	int money;
+	string name;
+public:
+	Store(string str_name, int str_money);
+	void possess(string name);
+	~Store() {};
+};
+
+
+//大作业class.cpp文件
+#include "大作业1.h"
+#include <iostream>
+using namespace std;
+
+Dog::Dog(string name,int i_money)
+{   
+	money = i_money;
+	s_name = new string (name);
+}
+
+void Dog::speak()
+{
+	cout << "叫声：汪 汪 汪 " << endl;
+	
+}
+
+void Dog::action()
+{
+	cout << "行为 ：跑 跑 跑 " << endl;
+	cout << "行为 ： 看门" << endl;
+}
+
+Dog::~Dog()
+{
+	if (this->s_name != NULL)
+	{
+		delete s_name;
+		s_name = NULL;
+
+	}
+}
+
+Cat::Cat(string name, int i_money)
+{
+	money = i_money;
+	s_name = new string(name);
+}
+
+void Cat::speak()
+{
+	cout << "叫声：喵 喵 喵 " << endl;
+	cout << "行为 ：跑 跑 跑 " << endl;
+	cout << "行为 ： 抓老鼠" << endl;
+}
+
+Cat::~Cat()
+{
+	if (this->s_name != NULL)
+	{
+		delete s_name;
+		s_name = NULL;
+
+	}
+}
+
+Snik::Snik(string name, int i_money)
+{
+	money = i_money;
+	s_name = new string(name);
+}
+
+void Snik::speak()
+{
+	cout << "叫声：嘶 嘶 嘶 " << endl;
+	cout << "行为 ：滑 滑 滑 " << endl;
+}
+
+Snik::~Snik()
+{
+	if (this->s_name != NULL)
+	{
+		delete s_name;
+		s_name = NULL;
+
+	}
+}
+
+Bird::Bird(string name, int i_money)
+{
+	money = i_money;
+	s_name = new string(name);
+}
+
+void Bird::speak()
+{
+	cout << "叫声：啾 啾 啾 " << endl;
+	cout << "行为 ：飞 飞 飞 " << endl;
+}
+
+Bird::~Bird()
+{
+	if (this->s_name != NULL)
+	{
+		delete s_name;
+		s_name = NULL;
+
+	}
+}
+
+People::People(string str_name, int str_money)
+{
+	name = str_name;
+	money = str_money;
+}
+
+void People::possess(string name)
+{
+
+}
+
+Store::Store(string str_name,int  str_money)
+{
+	name = str_name;
+	money = str_money;
+}
+
+
+void Store::possess(string name)
+{
+
+}
+
+
+//大作业main.cpp文件
+#include<iostream>
+#include<fstream>
+#include "大作业1.h"
+using namespace std;
+Animal *dog=new Dog("dog", 300);
+
+void primer_print()
+{
+	cout << "**********宠物店购买系统**********" << endl;
+	cout << "           请选择身份" << endl;
+	cout << "           1.Store" << endl;
+	cout << "           2.people" << endl;
+	cout << "           3.退出" << endl;
+	cout << "**********************************" << endl;
+}
+void People_print()
+{
+	cout << "**********People**********" << endl;
+	cout << "         1.新建" << endl;
+	cout << "         2.查询拥有宠物" << endl;
+	cout << "         3.查询拥有资金" << endl;
+	cout << "         4.返回上一层" << endl;
+}
+
+void creat(People* p)
+{
+	const char* path = "people.txt";
+	cout << "请输入用户名" << endl;
+	cin >> p->name;
+	cout << "请输入投入资金" << endl;
+	cin >> p->money;
+	cout << "创建成功" << endl;
+	fstream w;
+	w.open(path, ios::out);
+	w << p->name << endl;
+	w << p->money << endl;
+	w.close();
+}
+void inquary(People* p)
+{
+	int sum;
+	const char* path = "people_animal.txt";
+	fstream r;
+	r.open(path, ios::in);
+	r >> sum;
+	cout << sum;
+	r.close();
+}
+
+
+void people_item()
+{
+	People* p = new People("\0", 0);
+
+	while (1)
+	{
+		People_print();
+		int i;
+		cin >> i;
+		switch (i)
+		{
+		case 1:
+			creat(p);
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			return;
+		}
+	}
+}
+
+void Store_print()
+{
+	cout << "**********宠物店**********" << endl;
+	cout << "         0.开店" << endl;
+	cout << "         1.资金" << endl;
+	cout << "         2.货物" << endl;
+	cout << "         3.进货" << endl;
+	cout << "         4.卖货" << endl;
+	cout << "         5.返回上一层" << endl;
+	cout << "**************************" << endl;
+}
+
+void open(Store* s)
+{
+	cout << "请为你的商店取一个名字" << endl;
+	cin >> s->name;
+	cout << "请投入开店资金" << endl;
+	cin >> s->money;
+}
+
+void buyinfo(Store* s)
+{
+
+}
+void Store_item()
+{
+	Store* s = new Store("\0", 0);
+	while (1)
+	{
+		Store_print();
+		int i;
+		cin >> i;
+		switch (i)
+		{
+		case 0:
+			open(s);
+			break;
+		case 1:
+			cout <<"商店当前剩余资金为："<< s->money<<endl;
+			break;
+		case 2:
+			break;
+		case 3:
+			buyinfo(s);
+			break;
+		case 4:
+			break;
+		case 5:
+			return;
+		}
+	}
+}
+
+int main()
+{
+
+	while (1)
+	{
+		int i;
+		primer_print();
+		cin >> i;
+		switch (i)
+		{
+		case 1:
+			Store_item();
+			break;
+		case 2:
+			people_item();
+			break;
+		case 3:
+			return 0;
+		}
+	}
+	
+	return 0;
+}
