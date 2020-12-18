@@ -24,28 +24,34 @@ public:
 
 class Cat :public Animal
 {
+public:
 	string* s_name;
 	int money;
 	Cat(string name,int i_money);
 	virtual void speak();
+	virtual void action();
 	~Cat();
 };
 
 class Bird :public Animal
 {
+public:
 	string* s_name;
 	int money;
 	Bird(string name,int i_money);
 	virtual void speak();
+	virtual void action();
 	~Bird();
 };
 
 class Snik :public Animal
 {
+public:
 	string* s_name;
 	int money;
 	Snik(string name,int i_money);
 	virtual void speak();
+	virtual void action();
 	~Snik();
 };
 
@@ -53,9 +59,9 @@ class People
 {
 public:
     string name;
-	int money;
+	long long  money;
 public:
-	People(string str_name,  int str_money);
+	People(string str_name,  long long str_money);
 	void possess(string name);
 	~People() {};
 };
@@ -63,10 +69,10 @@ public:
 class Store
 {
 public:
-	int money;
+	long long money;
 	string name;
 public:
-	Store(string str_name, int str_money);
+	Store(string str_name, long long str_money);
 	void possess(string name);
 	~Store() {};
 };
@@ -85,14 +91,14 @@ Dog::Dog(string name,int i_money)
 
 void Dog::speak()
 {
-	cout << "叫声：汪 汪 汪 " << endl;
+	cout << "\t1.dog 叫声：汪 汪 汪 " << endl;
 	
 }
 
 void Dog::action()
 {
-	cout << "行为 ：跑 跑 跑 " << endl;
-	cout << "行为 ： 看门" << endl;
+	cout << "\t1.dog 行为 ：跑 跑 跑 " << endl;
+	cout << "\t1.dpg 行为 ： 看门" << endl;
 }
 
 Dog::~Dog()
@@ -113,9 +119,13 @@ Cat::Cat(string name, int i_money)
 
 void Cat::speak()
 {
-	cout << "叫声：喵 喵 喵 " << endl;
-	cout << "行为 ：跑 跑 跑 " << endl;
-	cout << "行为 ： 抓老鼠" << endl;
+	cout << "\t2.cat 叫声：喵 喵 喵 " << endl;
+}
+
+void Cat::action()
+{
+	cout << "\t2.cat 行为 ：跑 跑 跑 " << endl;
+	cout << "\t2.cat 行为 ： 抓老鼠" << endl;
 }
 
 Cat::~Cat()
@@ -136,8 +146,12 @@ Snik::Snik(string name, int i_money)
 
 void Snik::speak()
 {
-	cout << "叫声：嘶 嘶 嘶 " << endl;
-	cout << "行为 ：滑 滑 滑 " << endl;
+	cout << "\t3.snik 叫声：嘶 嘶 嘶 " << endl;
+}
+
+void Snik::action()
+{
+	cout << "\t3.snik 行为 ：滑 滑 滑 " << endl;
 }
 
 Snik::~Snik()
@@ -158,8 +172,12 @@ Bird::Bird(string name, int i_money)
 
 void Bird::speak()
 {
-	cout << "叫声：啾 啾 啾 " << endl;
-	cout << "行为 ：飞 飞 飞 " << endl;
+	cout << "\t4.bird 叫声：啾 啾 啾 " << endl;
+}
+
+void Bird::action()
+{
+	cout << "\t4.bird 行为 ：飞 飞 飞 " << endl;
 }
 
 Bird::~Bird()
@@ -172,7 +190,8 @@ Bird::~Bird()
 	}
 }
 
-People::People(string str_name, int str_money)
+
+People::People(string str_name, long long str_money)
 {
 	name = str_name;
 	money = str_money;
@@ -183,7 +202,7 @@ void People::possess(string name)
 
 }
 
-Store::Store(string str_name,int  str_money)
+Store::Store(string str_name,long long str_money)
 {
 	name = str_name;
 	money = str_money;
@@ -196,12 +215,47 @@ void Store::possess(string name)
 }
 
 
-//大作业main.cpp文件
+//大作业mian.cpp文件
 #include<iostream>
 #include<fstream>
 #include "大作业1.h"
 using namespace std;
-Animal *dog=new Dog("dog", 300);
+
+//多态 父类的指针或引用指向子类的对象
+void dospeak(Animal* animal)
+{
+	animal->speak();
+	animal->action();
+}
+
+Cat* cat = new Cat("cat", 250);
+Dog* dog = new Dog("dog", 300);
+Bird* bird = new Bird("bird", 900);
+Snik* snik = new Snik("snik", 600);
+int count_cat = 0;
+int count_dog = 0;
+int count_bird = 0;
+int count_snik = 0;
+
+int count_people_cat = 0;
+int count_people_dog = 0;
+int count_people_bird = 0;
+int count_people_snik = 0;
+
+People* p = new People("\0", 0);
+Store* s = new Store("\0", 0);
+
+void animal()
+{
+	dospeak(dog);
+	cout << "\t1.价格：" << dog->money<<endl;
+	dospeak(cat);
+	cout << "\t2.价格：" << cat->money<<endl;
+	dospeak(snik);
+	cout << "\t3.价格：" << snik->money<<endl;
+	dospeak(bird);
+	cout << "\t4.价格：" << bird->money<<endl;
+}
 
 void primer_print()
 {
@@ -218,7 +272,8 @@ void People_print()
 	cout << "         1.新建" << endl;
 	cout << "         2.查询拥有宠物" << endl;
 	cout << "         3.查询拥有资金" << endl;
-	cout << "         4.返回上一层" << endl;
+	cout << "         4.购买宠物" << endl;
+	cout << "         5.返回上一层" << endl;
 }
 
 void creat(People* p)
@@ -237,19 +292,150 @@ void creat(People* p)
 }
 void inquary(People* p)
 {
-	int sum;
 	const char* path = "people_animal.txt";
 	fstream r;
-	r.open(path, ios::in);
-	r >> sum;
-	cout << sum;
+	r.open(path, ios::out);
+
+	cout << "--------------------";
+	cout << "--------------------" << endl;
+	dospeak(dog);
+	cout << "\t1.拥有数量：" << count_people_dog << endl;
+	cout << "\t1.买价：" << dog->money << endl;
+	r << "dog\n" << "number: " << count_people_dog << "\tmoney:" << dog->money << endl;
+	dospeak(cat);
+	cout << "\t2.拥有数量：" << count_people_cat << endl;
+	cout << "\t2.买价：" << cat->money << endl;
+	r << "cat\n" << "number: " << count_people_cat << "\tmoney:" << cat->money << endl;
+	dospeak(snik);
+	cout << "\t3.拥有数量：" << count_people_snik << endl;
+	cout << "\t3.买价：" << snik->money << endl;
+	r << "snik\n" << "number: " << count_people_snik << "\tmoney:" << snik->money << endl;
+	dospeak(bird);
+	cout << "\t4.拥有数量：" << count_people_bird << endl;
+	cout << "\t4.买价：" << bird->money << endl;
+	r << "bird\n" << "number: " << count_people_bird << "\tmoney:" << bird->money << endl;
+	cout << "--------------------";
+	cout << "--------------------" << endl;
 	r.close();
 }
 
+void people_buyinfo_fromstore(People* p, Store* s)
+{
+	while (1)
+	{
+		cout << "--------------------";
+		cout << "--------------------" << endl;
+		animal();
+		cout << "\t5.返回上一层" << endl;
+		cout << "--------------------";
+		cout << "--------------------" << endl;
+		cout << "请选择你要购买的宠物和数量" << endl;
+		int i, m;
+		cin >> i;
+		if (i == 5)
+			return;
+		cin >> m;
+
+		switch (i)
+		{
+		case 1:
+		{
+			if (m * dog->money > p->money)
+			{
+				cout << "你的钱不够，请重新选择" << endl;
+				break;
+			}
+			if (m > count_dog)
+			{
+				cout << "商品货存不足，请重新选择" << endl;
+				break;
+			}
+			else
+			{
+				p->money -= m * dog->money;
+				s->money += m * dog->money;
+				count_dog -= m;
+				count_people_dog += m;
+				cout << "购买成功" << endl;
+				break;
+			}
+
+		}
+		case 2:
+		{
+			if (m * cat->money > p->money)
+			{
+				cout << "你的钱不够" << endl;
+				break;
+			}
+			if (m > count_cat)
+			{
+				cout << "商品货存不足，请重新选择" << endl;
+				break;
+			}
+			else
+			{
+				p->money -= m * cat->money;
+				s->money += m * cat->money;
+				count_cat -= m;
+				count_people_cat += m;
+				cout << "购买成功" << endl;
+				break;
+			}
+
+		}
+		case 3:
+		{
+			if (m * snik->money > s->money)
+			{
+				cout << "你的钱不够" << endl;
+				break;
+			}
+			if (m > count_snik)
+			{
+				cout << "商品货存不足，请重新选择" << endl;
+				break;
+			}
+			else
+			{
+				s->money += m * snik->money;
+				p->money -= m * snik->money;
+				count_snik -= m;
+				count_people_snik += m;
+				cout << "购买成功" << endl;
+				break;
+			}
+
+		}
+		case 4:
+		{
+			if (m * bird->money > s->money)
+			{
+				cout << "你的钱不够" << endl;
+				break;
+			}
+			if (m > count_bird)
+			{
+				cout << "商品货存不足，请重新选择" << endl;
+				break;
+			}
+			else
+			{
+				s->money += m * bird->money;
+				p->money -= m * bird->money;
+				count_bird -= m;
+				count_people_bird += m;
+				cout << "购买成功" << endl;
+				break;
+			}
+
+		}
+		}
+	}
+}
 
 void people_item()
 {
-	People* p = new People("\0", 0);
 
 	while (1)
 	{
@@ -262,10 +448,15 @@ void people_item()
 			creat(p);
 			break;
 		case 2:
+			inquary(p);
 			break;
 		case 3:
+			cout << "当前剩余资金为：" << p->money << endl;
 			break;
 		case 4:
+			people_buyinfo_fromstore(p, s);
+			break;
+		case 5:
 			return;
 		}
 	}
@@ -293,11 +484,165 @@ void open(Store* s)
 
 void buyinfo(Store* s)
 {
+	while (1)
+	{
+		cout << "--------------------";
+		cout << "--------------------" << endl;
+		animal();
+		cout << "\t5.返回上一层" << endl;
+		cout << "--------------------";
+		cout << "--------------------"<<endl;
+		cout << "请选择你要购买的宠物和数量" << endl;
+		int i, m;
+		cin >> i;
+		if (i == 5)
+			return;
+		cin >> m;
+		
+		switch (i)
+		{
+		case 1:
+		{
+			if (m * dog->money > s->money)
+			{
+				cout << "你的钱不够，请重新选择" << endl;
+				break;
+			}
+			else
+			{
+				s->money -= m * dog->money;
+				count_dog += m;
+				cout << "购买成功" << endl;
+				break;
+			}
+				
+		}
+		case 2:
+		{
+			if (m * cat->money > s->money)
+			{
+				cout << "你的钱不够" << endl;
+				break;
+			}
+			else
+			{
+				s->money -= m * cat->money;
+				count_cat += m;
+				cout << "购买成功" << endl;
+				break;
+			}
+
+		}
+		case 3:
+		{
+			if (m * snik->money > s->money)
+			{
+				cout << "你的钱不够" << endl;
+				break;
+			}
+			else
+			{
+				s->money -= m * snik->money;
+				count_snik += m;
+				cout << "购买成功" << endl;
+				break;
+			}
+
+		}
+		case 4:
+		{
+			if (m * bird->money > s->money)
+			{
+				cout << "你的钱不够" << endl;
+				break;
+			}
+			else
+			{
+				s->money -= m * bird->money;
+				count_bird += m;
+				cout << "购买成功" << endl;
+				break;
+			}
+
+		}
+		}
+	}
+}
+
+void showinfo()
+{
+	cout << "--------------------";
+	cout << "--------------------" << endl;
+	dospeak(dog);
+	cout << "\t1.拥有数量：" << count_dog << endl;
+	cout << "\t1.进价：" << dog->money << endl;
+	dospeak(cat);
+	cout << "\t2.拥有数量：" << count_cat << endl;
+	cout << "\t2.进价：" << cat->money << endl;
+	dospeak(snik);
+	cout << "\t3.拥有数量：" << count_snik << endl;
+	cout << "\t3.进价：" << snik->money << endl;
+	dospeak(bird);
+	cout << "\t4.拥有数量：" << count_bird << endl;
+	cout << "\t4.进价：" << bird->money << endl;
+	cout << "--------------------";
+	cout << "--------------------" << endl;
 
 }
+
+void soldinfo(Store* s)
+{
+	while (1)
+	{
+		int i,number,money;
+		showinfo();
+		cout << "\t5.返回上一层" << endl;
+		cout << "--------------------";
+		cout << "--------------------" << endl;
+		cout << "请选择你要出售的宠物、数量和价格"<<endl;
+		cin >> i;
+		if (i == 5)
+			return;
+		cin >> number;
+		cin >> money;
+		switch (i)
+		{
+		case 1:
+		{
+			count_dog -= number;
+			s->money += money * number;
+			cout << "出售成功" << endl;
+			break;
+		}
+		case 2:
+		{
+			count_cat -= number;
+			s->money += money * number;
+			cout << "出售成功" << endl;
+			break;
+		}
+		case 3:
+		{
+			count_snik -= number;
+			s->money += money * number;
+			cout << "出售成功" << endl;
+			break;
+		}
+		case 4:
+		{
+			count_bird -= number;
+			s->money += money * number;
+			cout << "出售成功" << endl;
+			break;
+		}
+		}
+
+
+	}
+}
+
 void Store_item()
 {
-	Store* s = new Store("\0", 0);
 	while (1)
 	{
 		Store_print();
@@ -312,11 +657,13 @@ void Store_item()
 			cout <<"商店当前剩余资金为："<< s->money<<endl;
 			break;
 		case 2:
+			showinfo();
 			break;
 		case 3:
 			buyinfo(s);
 			break;
 		case 4:
+			soldinfo(s);
 			break;
 		case 5:
 			return;
