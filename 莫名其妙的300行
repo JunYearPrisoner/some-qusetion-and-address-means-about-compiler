@@ -1,0 +1,319 @@
+//我不管我不管我就是学 以 致 用 了.............（闭嘴那你那没啥用的300行怎么解释
+//洛谷题1598
+//看到题第一眼，嗯.........用堆栈！！！！！！然后开始.........一下午没了（bushi
+//总之就是先读的压到底部，后读的先输出，全员初始化为空格，sum1迭代找最大
+//然后让从sum1开始循环输出，有*的出*没*的出空格
+//于是华丽丽的wa在了空格上，淦啊
+//所以300行怎么来的...全是定义+初始化+迭代来的（浪费内存啊！！！！！！！
+
+
+
+
+#include<iostream>
+#include<istream>
+#include<string>
+#include<algorithm>
+#include<math.h>
+using namespace std;
+int sum1 = 0;
+int a1 = 0;
+int b1 = 0;
+int c1 = 0;
+int d1 = 0;
+int e1 = 0;
+int f1 = 0;
+int g1 = 0;
+int h1 = 0;
+int i1 = 0;
+int j2 = 0;
+int k1 = 0;
+int l1 = 0;
+int m1 = 0;
+int n1 = 0;
+int o1 = 0;
+int p1 = 0;
+int q1 = 0;
+int r1 = 0;
+int s1 = 0;
+int t1 = 0;
+int u1 = 0;
+int v1 = 0;
+int w1 = 0;
+int x1 = 0;
+int y2 = 0;
+int z1 = 0;
+
+struct button
+{
+	char a = ' ';
+	char b = ' ';
+	char c = ' ';
+	char d = ' ';
+	char e = ' ';
+	char f = ' ';
+	char g = ' ';
+	char h = ' ';
+	char i = ' ';
+	char j = ' ';
+	char k = ' ';
+	char l = ' ';
+	char m = ' ';
+	char n = ' ';
+	char o = ' ';
+	char p = ' ';
+	char q = ' ';
+	char r = ' ';
+	char s = ' ';
+	char t = ' ';
+	char u = ' ';
+	char v = ' ';
+	char w = ' ';
+	char x = ' ';
+	char y = ' ';
+	char z = ' ';
+};
+button but[400];
+void conclude(char duqu1[])
+{
+	for (int i = 0;i < 100;i++)
+	{
+		if (duqu1[i] == 'A')
+		{
+			but[a1].a = '*';
+			a1++;
+			if (a1 > sum1)
+				sum1 = a1;
+			continue;
+		}
+		if (duqu1[i] == 'B')
+		{
+			but[b1].b = '*';
+			b1++;
+			if (b1 > sum1)
+				sum1 = b1;
+			continue;
+		}
+		if (duqu1[i] == 'C')
+		{
+			but[c1].c = '*';
+			c1++;
+			if (c1 > sum1)
+				sum1 = c1;
+			continue;
+		}
+		if (duqu1[i] == 'D')
+		{
+			but[d1].d = '*';
+			d1++;
+			if (d1 > sum1)
+				sum1 = d1;
+			continue;
+		}
+		if (duqu1[i] == 'E')
+		{
+			but[e1].e = '*';
+			e1++;
+			if (e1 > sum1)
+				sum1 = e1;
+			continue;
+		}
+		if (duqu1[i] == 'F')
+		{
+			but[f1].f = '*';
+			f1++;
+			if (f1 > sum1)
+				sum1 = f1;
+			continue;
+		}
+		if (duqu1[i] == 'G')
+		{
+			but[g1].g = '*';
+			g1++;
+			if (g1 > sum1)
+				sum1 = g1;
+			continue;
+		}
+		if (duqu1[i] == 'H')
+		{
+			but[h1].h = '*';
+			h1++;
+			if (h1 > sum1)
+				sum1 = h1;
+			continue;
+		}
+		if (duqu1[i] == 'I')
+		{
+			but[i1].i = '*';
+			i1++;
+			if (i1 > sum1)
+				sum1 = i1;
+			continue;
+		}
+		if (duqu1[i] == 'J')
+		{
+			but[j2].j = '*';
+			j2++;
+			if (j2 > sum1)
+				sum1 = j2;
+			continue;
+		}
+		if (duqu1[i] == 'K')
+		{
+			but[k1].k = '*';
+			k1++;
+			if (k1 > sum1)
+				sum1 = k1;
+			continue;
+		}
+		if (duqu1[i] == 'L')
+		{
+			but[l1].l = '*';
+			l1++;
+			if (l1 > sum1)
+				sum1 = l1;
+			continue;
+		}
+		if (duqu1[i] == 'M')
+		{
+			but[m1].m = '*';
+			m1++;
+			if (m1 > sum1)
+				sum1 = m1;
+			continue;
+		}
+		if (duqu1[i] == 'N')
+		{
+			but[n1].n = '*';
+			n1++;
+			if (n1 > sum1)
+				sum1 = n1;
+			continue;
+		}
+		if (duqu1[i] == 'O')
+		{
+			but[o1].o = '*';
+			o1++;
+			if (o1 > sum1)
+				sum1 = o1;
+			continue;
+		}
+		if (duqu1[i] == 'P')
+		{
+			but[p1].p = '*';
+			p1++;
+			if (p1 > sum1)
+				sum1 = p1;
+			continue;
+		}
+		if (duqu1[i] == 'Q')
+		{
+			but[q1].q = '*';
+			q1++;
+			if (q1 > sum1)
+				sum1 = q1;
+			continue;
+		}
+		if (duqu1[i] == 'R')
+		{
+			but[r1].r = '*';
+			r1++;
+			if (r1 > sum1)
+				sum1 = r1;
+			continue;
+		}
+		if (duqu1[i] == 'S')
+		{
+			but[s1].s = '*';
+			s1++;
+			if (s1 > sum1)
+				sum1 = s1;
+			continue;
+		}
+		if (duqu1[i] == 'T')
+		{
+			but[t1].t = '*';
+			t1++;
+			if (t1 > sum1)
+				sum1 = t1;
+			continue;
+		}
+		if (duqu1[i] == 'U')
+		{
+			but[u1].u = '*';
+			u1++;
+			if (u1 > sum1)
+				sum1 = u1;
+			continue;
+		}
+		if (duqu1[i] == 'V')
+		{
+			but[v1].v = '*';
+			v1++;
+			if (v1 > sum1)
+				sum1 = v1;
+			continue;
+		}
+		if (duqu1[i] == 'W')
+		{
+			but[w1].w = '*';
+			w1++;
+			if (w1 > sum1)
+				sum1 = w1;
+			continue;
+		}
+		if (duqu1[i] == 'X')
+		{
+			but[x1].x = '*';
+			x1++;
+			if (x1 > sum1)
+				sum1 = x1;
+			continue;
+		}
+		if (duqu1[i] == 'Y')
+		{
+			but[y2].y = '*';
+			y2++;
+			if (y2 > sum1)
+				sum1 = y2;
+			continue;
+		}
+		if (duqu1[i] == 'Z')
+		{
+			but[z1].z = '*';
+			z1++;
+			if (z1 > sum1)
+				sum1 = z1;
+			continue;
+		}
+	}
+}
+
+int main()
+{
+	char duqu1[101];
+	char duqu2[101];
+	char duqu3[101];
+	char duqu4[101];
+	cin.getline(duqu1, 100);
+	cin.getline(duqu2, 100);
+	cin.getline(duqu3, 100);
+	cin.getline(duqu4, 100);
+	conclude(duqu1);
+	conclude(duqu2);
+	conclude(duqu3);
+	conclude(duqu4);
+	for (sum1;sum1 > 0;sum1--)
+	{
+		cout << but[sum1].a << " " << but[sum1].b << " " << but[sum1].c << " " << but[sum1].d << " ";
+		cout << but[sum1].e << " " << but[sum1].f << " " << but[sum1].g << " " << but[sum1].h << " ";
+		cout << but[sum1].i << " " << but[sum1].j << " " << but[sum1].k << " " << but[sum1].l << " ";
+		cout << but[sum1].m << " " << but[sum1].n << " " << but[sum1].o << " " << but[sum1].p << " ";
+		cout << but[sum1].q << " " << but[sum1].r << " " << but[sum1].s << " " << but[sum1].t << " ";
+		cout << but[sum1].u << " " << but[sum1].v << " " << but[sum1].w << " " << but[sum1].x << " ";
+		cout << but[sum1].y << " " << but[sum1].z;
+		cout << endl;
+	}
+	cout << "* * * * * * * * * * * * * * * * * * * * * * * * * *"<<endl;
+	cout << "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
+	return 0;
+}
