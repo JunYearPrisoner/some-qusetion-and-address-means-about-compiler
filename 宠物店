@@ -1,4 +1,4 @@
-```C++
+
 //大作业1.h头文件
 #include<string>
 using namespace std;
@@ -695,4 +695,4 @@ int main()
 	
 	return 0;
 }
-```
+
