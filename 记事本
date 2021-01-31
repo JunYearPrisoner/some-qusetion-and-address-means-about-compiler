@@ -1,0 +1,308 @@
+只要我跳过bug无视它就没有bug（bu
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WA记事本
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        //声明一个泛型集合来储存全路径
+        List<string> list = new List<string>();
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //加载程序的时候 隐藏panel
+            panel1.Visible = false;
+            //取消文本框的自动换行
+            textBox1.WordWrap = false;
+            monthCalendar1.Visible = false;
+            panel2.Visible = false;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //点击按钮的时候也要隐藏panel
+            panel1.Visible = false;
+        }
+
+        private void 显示ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            panel1.Visible = true;
+        }
+
+        private void 隐藏ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            panel1.Visible = false;
+        }
+
+        private void 新窗口ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //点击弹出对话框
+            OpenFileDialog ofd = new OpenFileDialog();
+            //属性设置
+            ofd.Title = "请选择要打开的文本文件";
+            //设置对话框可以多选
+            ofd.Multiselect = true;
+            //设置对话框的初始目录
+            ofd.InitialDirectory = @"C:\Users\Dell\Desktop";
+            //设置对话框的文件类型
+            ofd.Filter = "文本文件|*.txt";//|*表示名字是任意的。|*.*表明任意文件
+
+            //展示对话框
+            ofd.ShowDialog();
+
+            //获得在打开对话框中选择文件的路径
+            string path = ofd.FileName;
+            //将文件的全路径储存到泛型集合中
+            list.Add(path);
+            //获得用户打开文件的文件名
+            string fileName = Path.GetFileName(path);
+            //将文件名放到listbox中
+            listBox1.Items.Add(fileName);
+            if (path == "")
+            {
+                return;
+            }
+            else
+            {
+                using (FileStream fsread = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read))
+                {
+                    byte[] buffer = new byte[1024 * 1024 * 5];
+                    int r = fsread.Read(buffer, 0, buffer.Length);
+                    textBox1.Text = Encoding.Default.GetString(buffer, 0, r);
+                }
+            }
+        }
+
+        private void 新建ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form1 f1 = new Form1();
+            f1.Show();
+        }
+
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void 保存ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Title = "请选择要保存的路径";
+            sfd.InitialDirectory = @"C:\Users\Dell\Desktop";
+            sfd.Filter = "文本文件|*.txt";
+            sfd.ShowDialog();
+            //获取保存的路径
+            string path = sfd.FileName;
+            if (path == "")
+                return;
+            else
+            {
+                using (FileStream fssave = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    byte[] buffer = Encoding.Default.GetBytes(textBox1.Text);
+                    fssave.Write(buffer, 0, buffer.Length);
+                }
+                MessageBox.Show("保存成功");
+            }
+        }
+
+        private void 字体ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FontDialog fd = new FontDialog();
+            fd.ShowDialog();
+            textBox1.Font = fd.Font;
+        }
+
+        private void 颜色ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog cd = new ColorDialog();
+            cd.ShowDialog();
+            textBox1.ForeColor = cd.Color;
+        }
+
+        private void 自动换行ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(自动换行ToolStripMenuItem.Text=="自动换行")
+            {
+                textBox1.WordWrap = true;
+                自动换行ToolStripMenuItem.Text = "取消自动换行";
+
+            }
+            else if(自动换行ToolStripMenuItem.Text== "取消自动换行")
+            {
+                textBox1.WordWrap = false;
+                自动换行ToolStripMenuItem.Text = "取消自动换行";
+            }
+        }
+
+        /// <summary>
+        /// 双击打开对应文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void listBox1_DoubleClick(object sender, EventArgs e)
+        {
+            //获得双击的文件对应的全路径
+            string path=list[listBox1.SelectedIndex];
+            using (FileStream fsread = new FileStream(path, FileMode.Open, FileAccess.Read))
+            {
+                byte[] buffer = new byte[1024 * 1024 * 5];
+                int r = fsread.Read(buffer, 0, buffer.Length);
+
+                textBox1.Text = Encoding.Default.GetString(buffer,0,r);
+
+            }
+        }
+
+        private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("制作：严·学了个寂寞·茜楚\n时间：2021-01-30");
+        }
+
+        private void 日期ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(日期ToolStripMenuItem.Text=="日期")
+            {
+                monthCalendar1.Visible = true;
+                日期ToolStripMenuItem.Text = "关闭日期";
+            }
+            else if(日期ToolStripMenuItem.Text =="关闭日期")
+            {
+                monthCalendar1.Visible = false;
+                日期ToolStripMenuItem.Text = "日期";
+            }
+        }
+
+
+        //声明一个泛型集合充当全局变量来存储需要查找的内容
+        List<string> list2 = new List<string>();
+        List<int> list3 = new List<int>();
+        //点击查找和替换时调出在panel2上隐藏的查找替换选项
+        private void 查找ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (查找ToolStripMenuItem.Text == "查找")
+            {
+                查找ToolStripMenuItem.Text ="关闭";
+                panel2.Visible = true;
+            }
+            else if (查找ToolStripMenuItem.Text == "关闭")
+            {
+                查找ToolStripMenuItem.Text = "查找";
+                panel2.Visible = false;
+                list2.Clear();
+                list3.Clear();
+                textBox2.Text = "请输入要查找的内容";
+                textBox3.Text = "请输入要替换的内容";
+            }
+        }
+
+        private void 替换ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (替换ToolStripMenuItem.Text == "替换")
+            {
+
+                替换ToolStripMenuItem.Text = "关闭";
+                panel2.Visible = true;
+            }
+            else if (替换ToolStripMenuItem.Text == "关闭")
+            {
+                替换ToolStripMenuItem.Text = "替换";
+                panel2.Visible = false;
+                list2.Clear();
+                list3.Clear();
+                textBox2.Text = "请输入要查找的内容";
+                textBox3.Text = "请输入要替换的内容";
+            }
+        }
+
+       
+        private void butfind_Click(object sender, EventArgs e)
+        {
+            //获取右框的内容
+             list2.Add (textBox2.Text);
+             list3.Add (textBox1.Text.IndexOf(list2[0], 0, textBox1.Text.Length));
+             MessageBox.Show("在【】中的东西为查找到的.....\n不会跳转....、\n点击关闭关闭搜索页面....");
+             textBox1.Text = textBox1.Text.Insert(list3[0], "【");
+             textBox1.Text = textBox1.Text.Insert(list3[0] + list2[0].Length + 1, "】");
+             
+        }
+
+        private void butfindall_Click(object sender, EventArgs e)
+        {
+            while (list3[0] != (textBox1.Text.Length-2)&&list3[0]!=-1)
+            {
+
+                list3[0]=(textBox1.Text.IndexOf(list2[0], list3[0] + list2[0].Length + 1));
+                if (list3[0] == -1)
+                    break;
+                textBox1.Text = textBox1.Text.Insert(list3[0], "【");
+                textBox1.Text = textBox1.Text.Insert(list3[0] + list2[0].Length + 1, "】");
+            }
+
+
+        }
+
+        private void 删除ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //获取选中的文本
+            string str = textBox1.SelectedText;
+            //获取str的坐标
+            int a = textBox1.Text.IndexOf(str, 0, textBox1.Text.Length);
+            //删除所选字符串
+            textBox1.Text= textBox1.Text.Remove(a,str.Length);
+           
+        }
+
+        private void 复制ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+             textBox1.Copy();
+        }
+
+        private void 粘贴ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //获取剪切板上的内容
+            IDataObject data = Clipboard.GetDataObject();
+            //将剪切板上的内容转换为string类型
+            string str = (string)data.GetData(DataFormats.Text);
+            textBox1.AppendText(str);
+        }
+
+        private void 剪切ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textBox1.Cut();
+        }
+
+        private void butat_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("点击关闭关闭搜索页面....");
+            string Find = textBox2.Text;
+            string InFind = textBox3.Text;
+            int i = textBox1.Text.IndexOf(Find);
+            textBox1.Text = textBox1.Text.Remove(i, i + InFind.Length);
+            textBox1.Text = textBox1.Text.Insert(i, InFind);
+        }
+
+        private void butatall_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("点击关闭关闭搜索页面....");
+            string Find = textBox2.Text;
+            string InFind = textBox3.Text;
+            textBox1.Text= textBox1.Text.Replace(Find, InFind);
+        }
+    }
+}
