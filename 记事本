@@ -1,10 +1,16 @@
-只要我跳过bug无视它就没有bug（bu
+*区别了保存和另保存为
+*区别了新建和新窗口
+*保存一次后再保存不显示路径
+*追加了查找替换时没有查找到的情况
+*增加了撤销（跑去把底层学了遍结果直接点出来了....
+*更改了设置完字体和颜色保存后再打开被重置，但也仅限于先保存再打开，先打开则不会显示，因为txt文本本身不包含字体和颜色
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,7 +28,12 @@ namespace WA记事本
 
         //声明一个泛型集合来储存全路径
         List<string> list = new List<string>();
-
+        static bool Judge = true;
+        Dictionary<Font,string> dic = new Dictionary<Font,string>();
+        Dictionary<Color, string> col = new Dictionary<Color, string>();
+        Font font;
+        Color c;
+        static string color="";
         private void Form1_Load(object sender, EventArgs e)
         {
             //加载程序的时候 隐藏panel
@@ -84,6 +95,23 @@ namespace WA记事本
                     byte[] buffer = new byte[1024 * 1024 * 5];
                     int r = fsread.Read(buffer, 0, buffer.Length);
                     textBox1.Text = Encoding.Default.GetString(buffer, 0, r);
+                    foreach (KeyValuePair<Font, string> kv in dic)
+                    {
+                        if(kv.Value==fileName)
+                        {
+                            textBox1.Font = kv.Key;
+                            break;
+                        }
+                    }
+                    foreach (KeyValuePair<Color, string> kv in col)
+                    {
+                        if (kv.Value == fileName)
+                        {
+                           
+                            textBox1.ForeColor = kv.Key; 
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -118,6 +146,9 @@ namespace WA记事本
                     fssave.Write(buffer, 0, buffer.Length);
                 }
                 MessageBox.Show("保存成功");
+                string name = Path.GetFileName(path);
+                dic.Add(font, name);
+                col.Add(c, name);
             }
         }
 
@@ -126,6 +157,8 @@ namespace WA记事本
             FontDialog fd = new FontDialog();
             fd.ShowDialog();
             textBox1.Font = fd.Font;
+            font = fd.Font;
+            
         }
 
         private void 颜色ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -133,6 +166,8 @@ namespace WA记事本
             ColorDialog cd = new ColorDialog();
             cd.ShowDialog();
             textBox1.ForeColor = cd.Color;
+            color = cd.Color.ToString();
+            c = cd.Color;
         }
 
         private void 自动换行ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -159,6 +194,7 @@ namespace WA记事本
         {
             //获得双击的文件对应的全路径
             string path=list[listBox1.SelectedIndex];
+             
             using (FileStream fsread = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
                 byte[] buffer = new byte[1024 * 1024 * 5];
@@ -236,9 +272,17 @@ namespace WA记事本
             //获取右框的内容
              list2.Add (textBox2.Text);
              list3.Add (textBox1.Text.IndexOf(list2[0], 0, textBox1.Text.Length));
-             MessageBox.Show("在【】中的东西为查找到的.....\n不会跳转....、\n点击关闭关闭搜索页面....");
-             textBox1.Text = textBox1.Text.Insert(list3[0], "【");
-             textBox1.Text = textBox1.Text.Insert(list3[0] + list2[0].Length + 1, "】");
+             if(list3[0]==-1)
+            {
+                MessageBox.Show("没找到.....");
+            }
+             else
+            {
+                MessageBox.Show("在【】中的东西为查找到的.....\n不会跳转....、\n点击关闭关闭搜索页面....");
+                textBox1.Text = textBox1.Text.Insert(list3[0], "【");
+                textBox1.Text = textBox1.Text.Insert(list3[0] + list2[0].Length + 1, "】");
+            }
+             
              
         }
 
@@ -289,20 +333,89 @@ namespace WA记事本
 
         private void butat_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("点击关闭关闭搜索页面....");
+            
             string Find = textBox2.Text;
             string InFind = textBox3.Text;
             int i = textBox1.Text.IndexOf(Find);
-            textBox1.Text = textBox1.Text.Remove(i, i + InFind.Length);
-            textBox1.Text = textBox1.Text.Insert(i, InFind);
+            if(i==-1)
+            {
+                MessageBox.Show("没找到...");
+            }
+            else
+            {
+                MessageBox.Show("点击关闭关闭搜索页面....");
+                textBox1.Text = textBox1.Text.Remove(i, i + InFind.Length);
+                textBox1.Text = textBox1.Text.Insert(i, InFind);
+            }
         }
 
         private void butatall_Click(object sender, EventArgs e)
         {
+            
             MessageBox.Show("点击关闭关闭搜索页面....");
             string Find = textBox2.Text;
             string InFind = textBox3.Text;
             textBox1.Text= textBox1.Text.Replace(Find, InFind);
         }
+
+        private void 新建ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        public static string path1 = "";
+        private void 保存ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            if (Judge)
+            {
+                
+                sfd.Title = "请选择要保存的路径";
+                sfd.InitialDirectory = @"C:\Users\Dell\Desktop";
+                sfd.Filter = "文本文件|*.txt";
+                sfd.ShowDialog();
+                //获取保存的路径
+                string path = sfd.FileName;
+                path1 = path;
+                if (path == "")
+                    return;
+                else
+                {
+                    using (FileStream fssave = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write))
+                    {
+                        byte[] buffer = Encoding.Default.GetBytes(textBox1.Text);
+                        fssave.Write(buffer, 0, buffer.Length);
+                    }
+                    MessageBox.Show("保存成功");
+                }
+                Judge = false;
+                string name = Path.GetFileName(path);
+                dic.Add(font, name);
+                col.Add(c, name);
+            }
+            else
+            {
+                using (FileStream fssave = new FileStream(path1, FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    byte[] buffer = Encoding.Default.GetBytes(textBox1.Text);
+                    fssave.Write(buffer, 0, buffer.Length);
+                }
+                MessageBox.Show("保存成功");
+                string name = Path.GetFileName(path1);
+                dic.Add(font, name);
+                col.Add(c, name);
+            }
+        }
+
+        private void 撤销ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Undo();
+        }
     }
 }
+
