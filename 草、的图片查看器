@@ -1,0 +1,287 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WA4
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+            //添加一个滚轮事件
+            this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pMouseWheel);
+        }
+
+        private void pMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            
+            /*Size t = new Size(0, 0); 
+            t.Width += e.Delta;
+            t.Height += e.Delta;*/
+           
+            if(e.Delta>0)
+            {
+                try
+                {
+                    Image myImage = pictureBox1.Image;
+                    Bitmap myBitmap = new Bitmap(myImage, myImage.Width * 2, myImage.Height * 2);
+                    pictureBox1.Image = myBitmap;
+                }
+                catch
+                {
+
+                }
+            }
+            else
+            {
+                try
+                {
+                    Image myImage = pictureBox1.Image;
+                    Bitmap myBitmap = new Bitmap(myImage, myImage.Width / 2, myImage.Height / 2);
+                    pictureBox1.Image = myBitmap;
+                }
+                catch
+                {
+
+                }
+            }
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            /* button1.Visible = false;
+             button2.Visible = false;*/
+
+            //设置图片的显示
+            
+
+            //pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            
+            
+        }
+
+        List<string> list = new List<string>();
+        
+        //操作文件夹的类，获得指定文件夹所有文件的全路径
+        int i = 0;
+        private void button2_Click(object sender, EventArgs e)
+        {
+            i++;
+            if(i==list.Count)
+            {
+                i = 0;
+            }
+            //设置窗体大小
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox1.Image =Image.FromFile(list[i]);
+            Form1.ActiveForm.Width = pictureBox1.Width + 18;
+            Form1.ActiveForm.Height = pictureBox1.Height + 78;
+           // pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+
+            //设置当前图片
+            string picnow = "第" + (i+1) + "张";
+            第0张ToolStripMenuItem.Text = picnow;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            i--;
+            if(i<0)
+            {
+                i = list.Count - 1;
+            }
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox1.Image = Image.FromFile(list[i]);
+            Form1.ActiveForm.Width = pictureBox1.Width + 18;
+            Form1.ActiveForm.Height = pictureBox1.Height + 78;
+            //pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+
+            //设置当前图片
+            string picnow = "第" + (i + 1) + "张";
+            第0张ToolStripMenuItem.Text = picnow;
+
+        }
+
+        private void button1_MouseEnter(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button1_MouseLeave(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button1_MouseMove(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        private void 打开图片ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void 打开图片ToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            //点击弹出对话框
+            OpenFileDialog ofd = new OpenFileDialog();
+            //属性设置
+            ofd.Title = "请选择要打开的图片";
+            //设置对话框的初始目录
+            ofd.InitialDirectory = @"C:\Users\Dell\Desktop";
+            //设置对话框的文件类型
+            //保证第一个打开的文件是图片
+            ofd.Filter = "JPEG files (*.jpg)|*.jpg|位图(*.bmp)|*.bmp|GIF files (*.gif)|*.gif|PNG(*.PNG)|*.PNG";
+            //展示对话框
+            ofd.ShowDialog();
+            //获得在打开对话框中选择文件的路径
+            string path1 = ofd.FileName;
+            if (path1 == "")
+            {
+                return;
+            }
+            else
+            {
+                //获得文件路径
+                string pa =Path.GetDirectoryName(path1);
+                //获得文件中所有文件的全路径
+                string[] path2 = Directory.GetFiles(pa);
+                string pat = path1;
+                for (int j = 0; j < path2.Length; j++)
+                {
+                    //将不属于图片的其它文件过滤掉
+                    path1 = Path.GetExtension(path2[j]);
+                    if(path1==".jpg"||path1==".bmp"||path1==".jif"
+                        ||path1== ".jpeg"||path1==".PNG"||path1==".png"
+                        ||path1==".JPG"||path1==".BMP"||path1==".JIF"||path1==".JPEG")
+                    {
+                        //将文件中所有图片的全路径存储到list中
+                        list.Add(path2[j]);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                //将当前图片的位置传给变量i
+                i = list.IndexOf(pat);
+                //显示当前点击的图片
+                pictureBox1.Image = Image.FromFile(pat);
+                //将窗体大小与图片大小匹配
+                Form1.ActiveForm.Width = pictureBox1.Width + 18;
+                Form1.ActiveForm.Height = pictureBox1.Height + 78;
+                //pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+                //设置图片总数
+                string pic = "共" + list.Count + "张图片";
+                共0张图片ToolStripMenuItem.Text = pic;
+                //设置当前图片
+                string picnow = "第" + (i + 1) + "张";
+                第0张ToolStripMenuItem.Text = picnow;
+
+            }
+        }
+
+        private void 共0张图片ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            /* Image myImage = pictureBox1.Image;
+             Bitmap myBitmap = new Bitmap(myImage, myImage.Width * 2, myImage.Height * 2);
+             pictureBox1.Image = myBitmap;*/
+            int width = pictureBox1.Width;
+            int height = pictureBox1.Height;
+            int width1 = (int)(width * 1.2);
+            int height1 = (int)(height * 1.2);
+
+            pictureBox1.Top = pictureBox1.Top + (height - height1) / 2;
+            pictureBox1.Left = pictureBox1.Left + (width - width1) / 2;
+            pictureBox1.Height = height1;
+            pictureBox1.Width = width1;
+        }
+
+        private void pictureBox3_Click_1(object sender, EventArgs e)
+        {
+          
+            //放大图片，防止异常放入try中
+            try
+            {
+                Image myImage = pictureBox1.Image;
+                Bitmap myBitmap = new Bitmap(myImage, myImage.Width * 2, myImage.Height * 2);
+                pictureBox1.Image = myBitmap;
+            }
+            catch
+            {
+
+            }
+            
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            //缩小图片
+            try
+            {
+                Image myImage = pictureBox1.Image;
+                Bitmap myBitmap = new Bitmap(myImage, myImage.Width / 2, myImage.Height / 2);
+                pictureBox1.Image = myBitmap;
+            }
+            catch
+            {
+
+            }
+
+        }
+
+        private void pictureBox6_Click(object sender, EventArgs e)
+        {
+            //顺时针旋转
+            pictureBox1.Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            pictureBox1.Refresh();
+        }
+
+        private void pictureBox7_Click(object sender, EventArgs e)
+        {
+            string del=list[i];
+            i++;
+            list.RemoveAt(i-1);
+            //将要删除的图片从list中移除
+            //释放picturebox所占用的内存
+            Image image = pictureBox1.Image;
+            pictureBox1.Image = null;
+            image.Dispose();
+            //彻底删除图片
+            File.Delete(del);
+            //重新加载下一张图片
+            if (i == list.Count)
+            {
+                i = 0;
+            }
+            //设置窗体大小
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox1.Image = Image.FromFile(list[i]);
+            Form1.ActiveForm.Width = pictureBox1.Width + 18;
+            Form1.ActiveForm.Height = pictureBox1.Height + 78;
+            // pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+            //设置图片总数
+            string pic = "共" + list.Count + "张图片";
+            共0张图片ToolStripMenuItem.Text = pic;
+            //设置当前图片
+            string picnow = "第" + (i + 1) + "张";
+            第0张ToolStripMenuItem.Text = picnow;
+            MessageBox.Show("删除成功");
+        }
+    }
+}
